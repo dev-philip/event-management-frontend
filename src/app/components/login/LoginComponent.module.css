@@ -1,0 +1,266 @@
+/* Reset some default margin/padding */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style the modal */
+  
+  .modal {
+    display: block; 
+    position: fixed; 
+    /* z-index: 999;  */
+    /* left: 0;
+    top: 0; */
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: transparent;
+    
+  }
+  
+  
+  
+  .modal-menubar{
+    position: relative;
+  }
+  
+  /* Style the close button */
+  .homeIcon {
+    position: absolute;
+    color: #aaa;
+    margin-top: 15px;
+    right: 4%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .homeIcon:hover,
+  .homeIcon:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+
+
+  .backIcon {
+    position: absolute;
+    color: #aaa;
+    margin-top: 15px;
+    left: 4%;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .backIcon:hover,
+  .backIcon:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+  
+  
+  
+  
+  
+  /* Responsive styles - adjust as needed */
+  @media (min-width: 768px) {
+    .modal-content {
+      width: 50%;
+    }
+  }
+  
+  
+  
+  /* form fields style */
+  
+  :root {
+    --primary-color-form: #8C55AA; 
+    --secondary-color-form: #2ecc71; 
+    --text-color-form: #E1BEE7;
+    --background-color-form: #F3EBF6; 
+    --button-gradient-form-1:  #9C27B0;
+    --button-gradient-form-2:  #E040FB;
+  }
+  
+  
+  
+  .main {
+    background-color: #FFFFFF;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  
+    font-family: 'Ubuntu', sans-serif;
+  }
+  
+  .auth-signin{
+    flex: 1; /* Grow to take up available space */
+    max-width: 400px; /* Limit maximum width */
+    height: auto; 
+  }
+  
+  .auth-signup{
+    width: 400px;
+    height: 520px;
+  }
+  
+  
+  .auth-forget{
+    width: 400px;
+    height: 280px;
+  }
+  
+  .auth-reset{
+    width: 400px;
+    height: 350px;
+  }
+  
+  .sign {
+    padding-top: 40px;
+    color: var(--primary-color-form);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    text-align: center;
+  }
+  
+  .input-container{
+    position: relative;
+  }
+  
+  .input-icon i {
+    position: absolute;
+    left: 15%;
+    top: 31%;
+    transform: translateY(-50%);
+    color: rgb(38, 50, 56);
+  
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+  }
+  
+  .eye-password i {
+    position: absolute;
+    /* left: 50%; */
+    right: 18%;
+    top: 31%;
+    transform: translateY(-50%);
+    color: rgb(38, 50, 56);
+    cursor: pointer;
+  }
+  
+  .un {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 35px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  /* margin-bottom: 50px; */
+  margin-bottom: 27px;
+  margin-left: 46px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  }
+  
+  form.form1 {
+    padding-top: 40px;
+  }
+  
+  .pass {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 35px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  /* margin-bottom: 50px; */
+  margin-bottom: 27px;
+  margin-left: 46px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  }
+  
+  
+  .un:focus, .pass:focus {
+    border: 2px solid rgba(0, 0, 0, 0.18) !important;
+    
+  }
+  
+  
+  .input-error{
+    position: absolute;
+    right: 18%;
+    color: red;
+    font-size: 10px;
+    margin-left: 46px;
+    margin-bottom: 27px;
+    text-decoration: underline;
+  }
+  
+  .submit {
+  cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, #9C27B0, #E040FB);
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-left: 35%;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  }
+  
+  .signup{
+    padding-top: 15px;
+    text-align: center;
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+  }
+  
+  .forgot {
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  
+  a {
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+    text-decoration: none
+  }
+  
+  @media (max-width: 600px) {
+    .main {
+        border-radius: 0px;
+    }
+  }
+  

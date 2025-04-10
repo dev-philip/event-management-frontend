@@ -27,37 +27,41 @@ type Event = {
   longitude: string;
 };
 
-const EventDetailPageComponent: React.FC = () => {
 
-  
+
+const EventDetailsPage: React.FC = () => {
   const { id } = useParams();
-  const [event, setEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [eventData, setEventData] = useState<Event | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
   useEffect(() => {
     if (id) {
-      axios.get(`${API_BASE_URL}/event/${id}`).then((res) => {
-        const fetchedEvent = res.data.event[0];
-        setEvent(fetchedEvent);
-        setCenter({
-          lat: parseFloat(fetchedEvent.latitude),
-          lng: parseFloat(fetchedEvent.longitude)
-        });
-        setLoading(false);
-      }).catch(console.error);
+      axios
+        .get(`${API_BASE_URL}/event/${id}`)
+        .then((response) => {
+          const fetchedEvent = response.data.event[0];
+          setEventData(fetchedEvent);
+          setMapCenter({
+            lat: parseFloat(fetchedEvent.latitude),
+            lng: parseFloat(fetchedEvent.longitude),
+          });
+          setIsLoading(false);
+        })
+        .catch(console.error);
     }
   }, [id]);
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric', month: 'long', day: 'numeric'
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
-  };
 
   const formatPhoneNumber = (phone: string) => {
     const cleaned = phone.replace(/\D/g, '');
@@ -66,51 +70,56 @@ const EventDetailPageComponent: React.FC = () => {
       : phone;
   };
 
-  if (loading || !event) {
+  if (isLoading || !eventData) {
     return (
-      <div className="text-center mt-10">
-        <i className="fa fa-circle-o-notch fa-spin" style={{ fontSize: 24 }} /> Loading Data...
+      <div className="text-center mt-10 text-lg text-gray-700">
+        <i className="fa fa-circle-o-notch fa-spin text-2xl" /> Loading event details...
       </div>
     );
   }
 
   return (
-    <section className={`${styles.eventbody} text-gray-600 body-font`}>
-      <div className="container mx-auto flex mt-2 items-center justify-center flex-col">
+    <section className="text-gray-700 body-font">
+      <div className="container mx-auto flex mt-4 items-center justify-center flex-col px-4">
         <div className="text-center lg:w-2/3 w-full">
-          <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{event.event_name}</h1>
-          <div className="flex mt-6 justify-center">
-            <div className="w-16 h-1 rounded-full bg-indigo-500 inline-flex"></div>
+          <h1 className="text-4xl font-bold mb-4 text-gray-900">{eventData.event_name}</h1>
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-1 bg-indigo-500 rounded-full"></div>
           </div>
-          <p className="mt-5 mb-8 leading-relaxed">{event.description}</p>
+          <p className="leading-relaxed text-lg mb-8">{eventData.description}</p>
         </div>
 
-        {/* INFO SECTIONS */}
-        <div className="container px-3 py-10 mx-auto">
-          <div className="flex flex-wrap -mx-4 space-y-6 sm:space-y-0">
+        {/* Info Cards */}
+        <div className="w-full py-10">
+          <div className="flex flex-wrap gap-y-10 gap-x-4 justify-center">
             <InfoCard icon="fa-user" title="Contact Information">
-              <p>{event.location_name}</p>
-              <p>{event.contact_email}</p>
-              <p>{formatPhoneNumber(event.contact_phone)}</p>
+              <p>{eventData.location_name}</p>
+              <p>{eventData.contact_email}</p>
+              <p>{formatPhoneNumber(eventData.contact_phone)}</p>
             </InfoCard>
 
             <InfoCard icon="fa-clock-o" title="Event Time">
-              <p>{formatDate(event.event_date)}</p>
-              <p>Start at {event.start_time} - {event.end_time}</p>
-              <p>Category - {event.category_name}</p>
+              <p>{formatDate(eventData.event_date)}</p>
+              <p>
+                {eventData.start_time} - {eventData.end_time}
+              </p>
+              <p>Category: {eventData.category_name}</p>
             </InfoCard>
 
             <InfoCard icon="fa-map-marker" title="Address">
-              <p>{event.street_address}, {event.city}, {event.state}, {event.zip_code}</p>
+              <p>
+                {eventData.street_address}, {eventData.city}, {eventData.state}{' '}
+                {eventData.zip_code}
+              </p>
             </InfoCard>
           </div>
         </div>
 
-        {/* GOOGLE MAP */}
+        {/* Google Map */}
         {isLoaded && (
-          <div className={`${styles.googlemapbody} w-full h-[380px] mt-6`}>
+          <div className="w-full h-[380px] mt-6 rounded-lg overflow-hidden shadow-lg">
             <GoogleMap
-              center={center}
+              center={mapCenter}
               zoom={17}
               mapContainerStyle={{ width: '100%', height: '100%' }}
               options={{ disableDefaultUI: true }}
@@ -120,19 +129,26 @@ const EventDetailPageComponent: React.FC = () => {
       </div>
     </section>
   );
-}
+};
 
-function InfoCard({ icon, title, children }: { icon: string, title: string, children: React.ReactNode }) {
+const InfoCard = ({
+  icon,
+  title,
+  children,
+}: {
+  icon: string;
+  title: string;
+  children: React.ReactNode;
+}) => {
   return (
-    <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
-      <div className="w-20 h-20 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-5">
+    <div className="md:w-1/3 w-full px-4 text-center">
+      <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
         <i className={`fa ${icon} fa-2x`} />
       </div>
-      <div className="flex-grow">
-        <h2 className="text-gray-900 text-lg title-font font-medium mb-3"><b>{title}</b></h2>
-        <div className="leading-relaxed text-base space-y-1">{children}</div>
-      </div>
+      <h2 className="text-xl font-semibold mb-2 text-gray-800">{title}</h2>
+      <div className="text-base space-y-1 text-gray-600">{children}</div>
     </div>
   );
-}
+};
+
 export default EventDetailPageComponent;

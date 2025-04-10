@@ -20,6 +20,8 @@ import ResetPageComponent from '@/app/pages/reset-password-page/ResetPageCompone
 
 import ProfilePageComponent from '@/app/pages/profile-page/ProfilePageComponent';
 
+import LoginPageComponent from '@/app/pages/login-page/LoginPageComponent';
+
 
 
 function App() {
@@ -34,7 +36,8 @@ function App() {
             <Route path="home" element={<HomePageComponent />} />
             <Route path="test" element={<TestPageComponent />} />
             <Route path="profile" element={<ProfilePageComponent />} />
-         
+            <Route path="login" element={<LoginPageComponent />} />
+            
             <Route path="event/:id" element={<EventDetailPageComponent />} />
             <Route path="*" element={<UnknownPageComponent />} /> {/* catch-all */}
           </Route>

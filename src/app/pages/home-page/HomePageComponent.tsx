@@ -9,6 +9,13 @@ import { getAllEvents } from '@/app/services/eventService';
 import { getRsoMembersById } from '@/app/services/rsoService';
 import { isJwtTokenExpired } from '@/app/utils/auth';
 
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 const HomePageComponent: React.FC = () => {
   const navigate = useNavigate();
 
@@ -65,6 +72,42 @@ const HomePageComponent: React.FC = () => {
     });
   };
 
+  const [isListening, setIsListening] = useState(false); // To track the listening state
+
+  const handleTextToSpeechForKeyboard = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (SpeechRecognition) {
+          const recognition = new SpeechRecognition();
+          recognition.interimResults = true;
+
+          recognition.addEventListener("start", () => {
+              // When listening starts
+              setIsListening(true);
+          });
+
+          recognition.addEventListener("end", () => {
+              // When listening stops
+              setIsListening(false);
+          });
+
+          recognition.addEventListener("result", (e:any) => {
+              const transcript = Array.from(e.results)
+                  .map((result:any) => result[0])
+                  .map((result) => result.transcript)
+                  .join("");
+
+              // Update the input field with the transcript
+              setSearchValue(transcript);
+              console.log(transcript);
+          });
+
+          recognition.start();
+      } else {
+          alert("Your browser does not support Speech Recognition.");
+      }
+  };
+
   return (
     <section className={`${styles.bodycontent} text-gray-600 body-font`}>
       {/* Search Bar */}
@@ -77,11 +120,35 @@ const HomePageComponent: React.FC = () => {
       >
         <label htmlFor="search-input" className="sr-only">Search</label>
         <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-          </div>
+          {isListening ? (
+                      <div className="absolute inset-y-0 start-0 flex items-center justify-center w-12 h-12 bg-red-100 rounded-full animate-pulse">
+                        <svg
+                          className="w-4 h-4 text-red-500"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 18h2v3h-2v-3z" />
+                        </svg>
+                      </div>
+                  ) : (
+                      <>
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 cursor-pointer" onClick={handleTextToSpeechForKeyboard}>
+                            {/* <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg> */}
+
+                          <svg
+                            className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 18h2v3h-2v-3z" />
+                          </svg>
+                        </div>
+                      </>
+                  )}
           <input
             id="search-input"
             type="search"

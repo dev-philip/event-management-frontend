@@ -6,6 +6,8 @@ import { ToastContainer} from 'react-toastify';
 import TestPageComponent from '@/app/pages/test-page/TestPageComponent';
 import HomePageComponent from '@/app/pages/home-page/HomePageComponent';
 import UnknownPageComponent from '@/app/pages/404-page/UnknownPageComponent';
+import SignupPageComponent from './app/pages/signup-page/SignupPageComponent';
+import CreateEventPageComponent from './app/pages/create-event-page/CreateEventPageComponent';
 
 import EventDetailPageComponent from '@/app/pages/event-detail-page/EventDetailPageComponent';
 
@@ -37,6 +39,8 @@ function App() {
             <Route path="test" element={<TestPageComponent />} />
             <Route path="profile" element={<ProfilePageComponent />} />
             <Route path="login" element={<LoginPageComponent />} />
+            <Route path="signup" element={<SignupPageComponent />} />
+            <Route path="create-event" element={<CreateEventPageComponent />} />
             
             <Route path="event/:id" element={<EventDetailPageComponent />} />
             <Route path="*" element={<UnknownPageComponent />} /> {/* catch-all */}

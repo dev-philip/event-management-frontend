@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styles from './EventDetailPageComponent.module.css'; 
-
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
@@ -29,7 +27,7 @@ type Event = {
 
 
 
-const EventDetailsPage: React.FC = () => {
+const EventDetailPageComponent: React.FC = () => {
   const { id } = useParams();
   const [eventData, setEventData] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
